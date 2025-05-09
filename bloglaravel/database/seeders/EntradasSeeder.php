@@ -15,6 +15,6 @@ class EntradasSeeder extends Seeder
     {
         //Llamamos al factory para generar datos de prueba
         //El factory se encarga de crear los registros en la base de datos
-        Entrada::factory(30)->create(); //Generamos 10 registros de prueba
+        Entrada::factory(10)->create(); //Generamos 10 registros de prueba
     }
 }

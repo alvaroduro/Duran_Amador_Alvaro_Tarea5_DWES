@@ -14,10 +14,22 @@
             'icono' => 'queue-list',
             'ruta' => route('admin.categorias.index'),
             'current' => request()->routeIs('admin.categorias.*'),//Sobre cualquier ruta que empiece por categorias
-        ]
+],[
+            'nombre' => 'Usuarios',
+            'icono' => 'user',
+            'ruta' => route('admin.usuarios.index'),
+            'current' => request()->routeIs('admin.usuarios.*'),//Sobre cualquier ruta que empiece por usuarios
+],[
+            'nombre' => 'Entradas',
+            'icono' => 'clipboard-document-list',
+            'ruta' => route('admin.entradas.index'),
+            'current' => request()->routeIs('admin.entradas.*'),//Sobre cualquier ruta que empiece por entradas
+]
+
     ]
 ];
 @endphp
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
@@ -35,9 +47,10 @@
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
         @fluxAppearance
+
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
         <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">

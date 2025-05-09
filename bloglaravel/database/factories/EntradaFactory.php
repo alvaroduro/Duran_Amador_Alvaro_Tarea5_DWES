@@ -24,8 +24,8 @@ class EntradaFactory extends Factory
             'slug' => $this->faker->unique()->slug,
             'descripcion' => $this->faker->text(200),
             'imagen' => null, 
-            'user_id' => User::all()->random()->id, //user_id aleatorio
             'categoria_id' => Categoria::all()->random()->id, //categoria_id aleatorio 
+            'user_id' => User::all()->random()->id, //user_id aleatorio
             'fecha_publicacion' => now(),
         ];
     }

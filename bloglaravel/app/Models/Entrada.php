@@ -26,5 +26,14 @@ class Entrada extends Model
     protected $casts = [
         'fecha_publicacion' => 'datetime',
     ];
-}
 
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'user_id'); // Dependencias
+    }
+
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class, 'categoria_id'); // Dependencias
+    }
+}

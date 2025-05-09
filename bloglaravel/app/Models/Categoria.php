@@ -14,4 +14,10 @@ class Categoria extends Model
     protected $fillable = [
         'nombre'
     ];
+
+    // Definir la relación inversa
+    public function entradas()
+    {
+        return $this->hasMany(Entrada::class, 'categoria_id');//relaciones
+    }
 }

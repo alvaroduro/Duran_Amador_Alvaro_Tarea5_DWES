@@ -23,12 +23,12 @@ new #[Layout('components.layouts.auth')] class extends Component {
     /**
      * Handle an incoming authentication request.
      */
-    public function login(): void
+    public function login():void
     {
         // Validaciones
         $this->validate([
         'email' => ['required', 'string', 'email'],
-        'password' => ['required', 'string'],
+        'password' => ['required', 'string']
     ], [
         'email.required' => 'El email es obligatorio.',
         'email.string' => 'El email debe ser una cadena de texto.',
@@ -39,7 +39,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         // Intentos fallidos
         $this->ensureIsNotRateLimited();
-
+        
         if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             RateLimiter::hit($this->throttleKey());
 
@@ -47,12 +47,14 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 'email' => __('Creedenciales Inválidas'),
             ]);
         }
-
+        
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
         $this->redirectIntended(default: route('home', absolute: false), navigate: true);
+
     }
+ 
 
     /**
      * Ensure the authentication request is not rate limited.
@@ -90,8 +92,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
-
-    <form wire:submit="login" class="flex flex-col gap-6">
+    <!--Formulario de inicio sesion-->
+    <form wire:submit="login"  class="flex flex-col gap-6">
         <!-- Email Address -->
         <flux:input
             wire:model="email"
@@ -125,9 +127,12 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <!-- Remember Me -->
         <flux:checkbox wire:model="remember" :label="__('Recuérdame')" />
 
+
         <div class="flex items-center justify-end">
-            <flux:button variant="primary" type="submit" class="w-full">{{ __('Iniciar Sesión') }}</flux:button>
+            <flux:button variant="primary" type="submit"
+            class="w-full" >{{ __('Iniciar Sesión') }}</flux:button>
         </div>
+
     </form>
 
     @if (Route::has('register'))
@@ -137,3 +142,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
         </div>
     @endif
 </div>
+
+
+
+
+

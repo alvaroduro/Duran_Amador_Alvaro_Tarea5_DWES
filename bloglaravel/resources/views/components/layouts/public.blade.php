@@ -15,6 +15,18 @@
             'icono' => 'queue-list',
             'ruta' => route('admin.categorias.index'),
             'current' => request()->routeIs('admin.categorias.*'),
+        ];
+        $links[] = [
+            'nombre' => 'Usuarios',
+            'icono' => 'user',
+            'ruta' => route('admin.usuarios.index'),
+            'current' => request()->routeIs('admin.usuarios.*'),
+        ];
+        $links[] = [
+            'nombre' => 'Entradas',
+            'icono' => 'clipboard-document-list',
+            'ruta' => route('admin.entradas.index'),
+            'current' => request()->routeIs('admin.entradas.*'),
         ]; }
 @endphp 
 
