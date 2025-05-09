@@ -7,8 +7,15 @@
             'icono' => 'layout-grid', //Icono del enlace
             'ruta' => route('home'), //Ruta donde debe ir
             'current' => request()->routeIs('home'), //Verificar si estamos en la ruta
-        ]       
+        ] 
     ];
+    if (auth()->check()) {
+        $links[] = [
+            'nombre' => 'Categorías',
+            'icono' => 'queue-list',
+            'ruta' => route('admin.categorias.index'),
+            'current' => request()->routeIs('admin.categorias.*'),
+        ]; }
 @endphp 
 
 <!DOCTYPE html>
@@ -34,7 +41,7 @@
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
             <!--LOGOTIPO-->
-            <a href="{{ route('dashboard') }}" class="ms-2 me-5 flex items-center space-x-2 rtl:space-x-reverse lg:ms-0" wire:navigate>
+            <a href="{{ route('home') }}" class="ms-2 me-5 flex items-center space-x-2 rtl:space-x-reverse lg:ms-0" wire:navigate>
                 {{-- <--RUTA DEL LOGOTIPO--> --}}
                 <x-app-logo />
             </a>
@@ -127,33 +134,50 @@
         <flux:sidebar stashable sticky class="lg:hidden border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-            <a href="{{ route('dashboard') }}" class="ms-1 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
+            <a href="{{ route('home') }}" class="ms-1 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
                 <x-app-logo />
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')">
-                    <flux:navlist.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                <flux:navlist.group :heading="__('Blog')">
+                    <flux:navlist.item icon="layout-grid" :href="route('home')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
             <flux:spacer />
-
-            <flux:navlist variant="outline">
-                <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                {{ __('Repository') }}
-                </flux:navlist.item>
-
-                <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                {{ __('Documentation') }}
-                </flux:navlist.item>
-            </flux:navlist>
         </flux:sidebar>
 
         <flux:main>
-            {{ $slot }}
+         <!--Mensaje de Bienvenida-->
+        <div class="flex items-center justify-center min-h-[60vh] px-4">
+            <div class="text-center max-w-2xl w-full">
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-zinc-800 dark:text-white mb-4">
+                    ¡Bienvenido al Blog gestionado por Álvaro Durán!
+                </h1>
+
+                <p class="text-base md:text-lg lg:text-xl text-zinc-600 dark:text-zinc-300 mb-6">
+                    Explora publicaciones, descubre nuevas categorías y conoce a nuestros autores. Este es tu espacio para compartir y aprender.
+                </p>
+
+                @guest
+                    <p class="text-base bg-yellow-200 md:text-lg lg:text-xl text-zinc-600 dark:text-zinc-300 mb-6 p-3 rounded">
+                        Inicia sesión o regístrate con nosotros
+                    </p>
+                @else
+                    <p class="text-base bg-green-100 md:text-lg lg:text-xl text-zinc-700 dark:text-zinc-300 mb-6 p-3 rounded">
+                        ¡Hola {{ auth()->user()->nombre }}! Navega por tu blog desde las pestañas en la parte superior de la web.
+                    </p>
+                @endguest
+
+                <div class="flex justify-center">
+                    <img src="{{ asset('/img/hello.jpg') }}" alt="Bienvenida al blog"
+                        class="rounded-2xl shadow-lg w-full max-w-[500px] h-auto dark:shadow-zinc-700 transition-all duration-300">
+                </div>
+            </div>
+        </div>
+
         </flux:main>
 
         @fluxScripts
