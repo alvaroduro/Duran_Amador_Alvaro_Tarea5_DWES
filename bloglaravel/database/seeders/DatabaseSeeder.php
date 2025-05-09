@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Database\Factories\CategoriaFactory;
+use Database\Factories\EntradaFactory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,9 +17,28 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        //Creacion de usuarios
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'nick' => 'alvarito',
+            'nombre' => 'Alvaro',
+            'apellidos' => 'Duran Amador',
+            'email' => 'alvaro@email.com',
+            'password' => bcrypt('12345678'),
+            'rol' => 'admin'
+        ]);
+
+        User::factory()->create([
+            'nick' => 'sofi',
+            'nombre' => 'Sofia',
+            'apellidos' => 'Jimenez Amador',
+            'email' => 'sofia@email.com',
+            'password' => bcrypt('12345678'),
+            'rol' => 'user'
+        ]);
+
+        $this->call([
+            CategoriasSeeder::class,
+            EntradasSeeder::class
         ]);
     }
 }
