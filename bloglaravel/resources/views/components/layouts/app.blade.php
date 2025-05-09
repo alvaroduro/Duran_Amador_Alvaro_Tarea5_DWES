@@ -1,34 +1,48 @@
-<!--Plantilla pagina principal dashboard-->
 @php
-    //Array de grupos de elementos y sus links
-    $groups = [
-    'Blog' => [
+    $grupoBlog = [
         [
             'nombre' => 'Dashboard',
             'icono' => 'home',
             'ruta' => route('home'),
             'current' => request()->routeIs('home'),
-],
-        [
+        ]
+    ];
+
+    if (auth()->user()->rol === 'admin') {
+        $grupoBlog[] = [
             'nombre' => 'Categorías',
             'icono' => 'queue-list',
             'ruta' => route('admin.categorias.index'),
-            'current' => request()->routeIs('admin.categorias.*'),//Sobre cualquier ruta que empiece por categorias
-],[
+            'current' => request()->routeIs('admin.categorias.*'),
+        ];
+
+        $grupoBlog[] = [
             'nombre' => 'Usuarios',
             'icono' => 'user',
             'ruta' => route('admin.usuarios.index'),
-            'current' => request()->routeIs('admin.usuarios.*'),//Sobre cualquier ruta que empiece por usuarios
-],[
+            'current' => request()->routeIs('admin.usuarios.*'),
+        ];
+
+        $grupoBlog[] = [
             'nombre' => 'Entradas',
             'icono' => 'clipboard-document-list',
             'ruta' => route('admin.entradas.index'),
-            'current' => request()->routeIs('admin.entradas.*'),//Sobre cualquier ruta que empiece por entradas
-]
+            'current' => request()->routeIs('admin.entradas.*'),
+        ];
+    } elseif (auth()->user()->rol === 'user') {
+        $grupoBlog[] = [
+            'nombre' => 'Entradas',
+            'icono' => 'clipboard-document-list',
+            'ruta' => route('user.entradas.index'),
+            'current' => request()->routeIs('user.entradas.*'),
+        ];
+    }
 
-    ]
-];
+    $groups = [
+        'Blog' => $grupoBlog
+    ];
 @endphp
+
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">

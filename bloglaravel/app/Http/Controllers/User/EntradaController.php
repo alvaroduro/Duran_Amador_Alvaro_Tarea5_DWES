@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Categoria;
 use App\Models\Entrada;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class EntradaController extends Controller
 {
@@ -17,9 +17,10 @@ class EntradaController extends Controller
      */
     public function index()
     {
-        $entradas = Entrada::with(['usuario', 'categoria'])->orderBy('id', 'desc')->paginate();
 
-        return view('admin.entradas.index', compact('entradas'));
+        // Trae las entradas del usuario autenticado
+        $entradas = Entrada::where('user_id', Auth::id())->paginate();
+        return view('user.entradas.index', compact('entradas'));
     }
 
 
@@ -33,7 +34,7 @@ class EntradaController extends Controller
         $categorias = Categoria::all();
 
         //Creacion de un nuevo Entrada
-        return view('admin.entradas.create', compact('usuarios', 'categorias'));
+        return view('user.entradas.create', compact('usuarios', 'categorias'));
     }
 
     /**
@@ -48,7 +49,6 @@ class EntradaController extends Controller
             'descripcion' => 'nullable|string',
             'contenido' => 'nullable|string',
             'categoria_id' => 'required|exists:categorias,id',
-            'user_id' => 'required|exists:users,id',
             'imagen' => 'nullable|image|max:2048',
         ], [
             'titulo.required' => 'El título es obligatorio.',
@@ -57,9 +57,7 @@ class EntradaController extends Controller
             'slug.required' => 'El slug es obligatorio.',
             'slug.unique' => 'El slug ya está en uso.',
             'categoria_id.required' => 'La categoría es obligatoria.',
-            'user_id.required' => 'El usuario es obligatoria.',
             'categoria_id.exists' => 'La categoría seleccionada no existe.',
-            'user_id.exists' => 'El usuario seleccionado no existe.',
             'imagen.image' => 'La imagen no cumple el formato adecuado.',
         ]);
 
@@ -80,7 +78,7 @@ class EntradaController extends Controller
         ]);
 
         // Redirigimos a la edición de la entrada
-        return redirect()->route('admin.entradas.index', $entrada);
+        return redirect()->route('user.entradas.index', $entrada);
     }
 
     /**
@@ -101,7 +99,7 @@ class EntradaController extends Controller
         $categorias = Categoria::all();
 
         //Creacion de un nuevo Entrada
-        return view('admin.entradas.edit', compact('entrada', 'usuarios', 'categorias'));
+        return view('user.entradas.edit', compact('entrada', 'usuarios', 'categorias'));
     }
 
     /**
@@ -114,7 +112,6 @@ class EntradaController extends Controller
             'titulo' => 'required|string|min:1|max:191',
             'slug' => 'required|string|min:1|max:191|unique:entradas,slug,' . $entrada->id, // Evita conflicto con el slug del mismo Entrada
             'categoria_id' => 'required|exists:categorias,id',
-            'user_id' => 'required|exists:users,id',
             'descripcion' => 'nullable|string',
             'imagen' => 'nullable|image', // Validación de imagen opcional
         ], [
@@ -156,7 +153,7 @@ class EntradaController extends Controller
         ]);
 
         // Redirigimos a la página de edición de la entrada
-        return redirect()->route('admin.entradas.edit', $entrada);
+        return redirect()->route('user.entradas.edit', $entrada);
     }
 
     /**
@@ -173,6 +170,6 @@ class EntradaController extends Controller
             'text' => 'Entrada: ' . $entrada->nombre . ' eliminada correctamente'
         ]);
 
-        return redirect()->route('admin.entradas.index');
+        return redirect()->route('user.entradas.index');
     }
 }

@@ -1,6 +1,5 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\EntradaController;
 
-Route::get('/',function() {
-    return "Hola user";
-})->name('dashboard');
+Route::resource('entradas', EntradaController::class);

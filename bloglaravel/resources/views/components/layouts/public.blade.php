@@ -1,34 +1,46 @@
 <!--Grupos de Links-->
 @php
-    //Array de grupos de elementos y sus links
+    // Array de grupos de elementos y sus links
     $links = [
         [
             'nombre' => 'Home',
-            'icono' => 'layout-grid', //Icono del enlace
-            'ruta' => route('home'), //Ruta donde debe ir
-            'current' => request()->routeIs('home'), //Verificar si estamos en la ruta
-        ] 
+            'icono' => 'layout-grid',
+            'ruta' => route('home'),
+            'current' => request()->routeIs('home'),
+        ]
     ];
+
     if (auth()->check()) {
-        $links[] = [
-            'nombre' => 'Categorías',
-            'icono' => 'queue-list',
-            'ruta' => route('admin.categorias.index'),
-            'current' => request()->routeIs('admin.categorias.*'),
-        ];
-        $links[] = [
-            'nombre' => 'Usuarios',
-            'icono' => 'user',
-            'ruta' => route('admin.usuarios.index'),
-            'current' => request()->routeIs('admin.usuarios.*'),
-        ];
-        $links[] = [
-            'nombre' => 'Entradas',
-            'icono' => 'clipboard-document-list',
-            'ruta' => route('admin.entradas.index'),
-            'current' => request()->routeIs('admin.entradas.*'),
-        ]; }
-@endphp 
+        if (auth()->user()->rol === 'admin') {
+            $links[] = [
+                'nombre' => 'Categorías',
+                'icono' => 'queue-list',
+                'ruta' => route('admin.categorias.index'),
+                'current' => request()->routeIs('admin.categorias.*'),
+            ];
+            $links[] = [
+                'nombre' => 'Usuarios',
+                'icono' => 'user',
+                'ruta' => route('admin.usuarios.index'),
+                'current' => request()->routeIs('admin.usuarios.*'),
+            ];
+            $links[] = [
+                'nombre' => 'Entradas',
+                'icono' => 'clipboard-document-list',
+                'ruta' => route('admin.entradas.index'),
+                'current' => request()->routeIs('admin.entradas.*'),
+            ];
+        } elseif (auth()->user()->rol === 'user') {
+            $links[] = [
+                'nombre' => 'Mis Entradas',
+                'icono' => 'clipboard-document-list',
+                'ruta' => route('user.entradas.index'),
+                'current' => request()->routeIs('user.entradas.*'),
+            ];
+        }
+    }
+@endphp
+
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
