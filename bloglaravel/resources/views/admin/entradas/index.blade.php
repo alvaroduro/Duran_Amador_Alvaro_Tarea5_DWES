@@ -59,7 +59,7 @@
                             {{ $entrada->slug }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $entrada->descripcion }}
+                            {!! $entrada->descripcion !!}
                         </td>
                         <td class="px-6 py-4">
                             {{ $entrada->imagen }}

@@ -10,11 +10,13 @@
         <form action="{{ route('admin.categorias.update', $categoria) }}" method="POST" class="space-y-4">
             @csrf
             @method('PUT')
-            <flux:input label="Nombre" name="nombre" value="{{$categoria->nombre}}" placeholder="Escribe el nombre de la Categroía">
+            <flux:input label="Nombre" name="nombre" value="{{ $categoria->nombre }}"
+                placeholder="Escribe el nombre de la Categroía">
             </flux:input>
             <div class="flex justify-end mt-3">
                 <flux:button type="submit" variant="primary">Editar Categoría</flux:button>
             </div>
         </form>
     </div>
+
 </x-layouts.app>
