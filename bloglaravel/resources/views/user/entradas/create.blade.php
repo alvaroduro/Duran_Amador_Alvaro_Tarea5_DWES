@@ -9,7 +9,7 @@
     <div class="card">
         <form action="{{ route('user.entradas.store') }}" method="POST" class="space-y-4">
             @csrf
-            
+
             <!--FORMULARIO TITULO-->
             <flux:input label="Titulo" name="titulo" oninput="string_to_slug(this.value, '#slug')"
                 value="{{ old('titulo') }}" placeholder="Escribe el título de la entrada">
@@ -31,12 +31,30 @@
             <flux:textarea label="Descripcion" name="descripcion" rows="4" resize="none">
                 {{ old('descripcion') }}</flux:textarea>
 
-            <!-- Input de archivo -->
-            <img id="avatarPreview" class="w-24 h-24 object-cover object-center rounded-full shadow-md mb-4"
-                src="{{ old('avatar') ? Storage::url(old('avatar')) : asset('/img/noimage.jpeg') }}" alt="avatar" />
+            <!--Imagen-->
+            <div class="relative mb-2 w-full max-w-4xl mx-auto">
 
-            <!-- Input de archivo -->
-            <flux:input type="file" label="Avatar" name="avatar" onchange="previewAvatar(event)" />
+                <!--Cogemos l url que nos genera el paquete-->
+                <img id="imgPreview" class="w-full h-auto aspect-video object-cover object-center rounded-md shadow-md"
+                    src=" {{ $entrada->imagen ? Storage::url($entrada->imagen) : 'https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg' }}"
+                    alt="img">
+
+                <!--Imagen por defecto-->
+                {{-- <img 
+                 class="w-full h-auto aspect-video object-cover object-center rounded-md shadow-md" 
+                 src="https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg" 
+                 alt="noimagen"> --}}
+
+                <!-- Cambiar Imagen -->
+                <div class="absolute top-4 right-4">
+                    <label class="bg-white px-4 py-2 rounded-lg shadow cursor-pointer text-sm hover:bg-gray-100">
+                        Cambiar Imagen
+                        <input class="hidden" type="file" name="imagen" accept="image/*"
+                            onchange="previewImage(event, '#imgPreview')">
+                    </label>
+                </div>
+            </div>
+
             <div class="flex justify-end mt-3">
                 <flux:button type="submit" variant="primary">Crear Entrada</flux:button>
             </div>

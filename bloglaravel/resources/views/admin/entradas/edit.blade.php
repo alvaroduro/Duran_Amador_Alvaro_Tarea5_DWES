@@ -21,12 +21,6 @@
                 src=" {{ $entrada->imagen ? Storage::url($entrada->imagen) : 'https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg'}}" 
                 alt="img">
 
-                <!--Imagen por defecto-->
-            {{-- <img 
-                class="w-full h-auto aspect-video object-cover object-center rounded-md shadow-md" 
-                src="https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg" 
-                alt="noimagen"> --}}
-
             <!-- Cambiar Imagen -->
             <div class="absolute top-4 right-4">
                 <label class="bg-white px-4 py-2 rounded-lg shadow cursor-pointer text-sm hover:bg-gray-100">

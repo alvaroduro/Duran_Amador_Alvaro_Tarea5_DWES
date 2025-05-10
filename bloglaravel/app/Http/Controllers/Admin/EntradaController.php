@@ -88,7 +88,12 @@ class EntradaController extends Controller
      */
     public function show(Entrada $entrada)
     {
-        //
+        //Nos traemos los datos
+        $usuarios = User::all();
+        $categorias = Categoria::all();
+
+        //Creacion de un nuevo Entrada
+        return view('admin.entradas.show', compact('entrada', 'usuarios', 'categorias'));
     }
 
     /**
@@ -137,10 +142,10 @@ class EntradaController extends Controller
 
             //Comprobamos si hay una imagen anterior
             if ($entrada->imagen) {
-                Storage::delete($entrada->imagen);
+                Storage::delete($entrada->imagen); //si hay algo la borramos
             }
 
-            //Subimos la imagen al servidor
+            //Subimos la imagen al servidor y guardamos la ruta
             $datos['imagen'] = Storage::put('entradas', $request->imagen);
         }
 

@@ -87,7 +87,12 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-red rounded-1 text-xs"
                                         href="{{ route('admin.entradas.destroy', $entrada) }}">Eliminar</button>
+                                        <!-- Boton EDITAR categoria -->                              
                                 </form>
+                                <a class="btn btn-purple rounded-1 text-xs"
+                                    href="{{ route('admin.entradas.show', $entrada) }}">
+                                    Detalle
+                                </a>
                             </div>
                         </td>
                     </tr>
@@ -98,38 +103,38 @@
 
     <!-- PAGINACION -->
     <div class="mt-4">
-        {{ $entradas->links() }}   
+        {{ $entradas->links() }}
     </div>
 
     @push('js')
-    <script>
-        //Seleccionamos todos los formularios de eliminar
-        forms = document.querySelectorAll('.delete-form');
-        //Recorremos todos los formularios  
-        forms.forEach(form => {
-            form.addEventListener('submit', function(e) {
-                //Evitar el comportamiento por defecto del formulario
-                e.preventDefault();
+        <script>
+            //Seleccionamos todos los formularios de eliminar
+            forms = document.querySelectorAll('.delete-form');
+            //Recorremos todos los formularios  
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    //Evitar el comportamiento por defecto del formulario
+                    e.preventDefault();
 
-                //Mostramos la alerta de confirmacion
-                Swal.fire({
-                    title: '¿Estás seguro que deseas eliminar?',
-                    text: "No podrás revertir esto!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Sí, eliminar!',
-                    cancelButtonText: 'Cancelar',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        //Si el usuario confirma, enviamos el formulario
-                        form.submit();
-                    }
+                    //Mostramos la alerta de confirmacion
+                    Swal.fire({
+                        title: '¿Estás seguro que deseas eliminar?',
+                        text: "No podrás revertir esto!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, eliminar!',
+                        cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            //Si el usuario confirma, enviamos el formulario
+                            form.submit();
+                        }
+                    });
                 });
             });
-        });
-    </script>
-@endpush
+        </script>
+    @endpush
 
 </x-layouts.app>

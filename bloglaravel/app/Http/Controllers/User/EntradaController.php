@@ -86,7 +86,7 @@ class EntradaController extends Controller
      */
     public function show(Entrada $entrada)
     {
-        //
+        return view('admin.usuarios.show', compact('usuario'));
     }
 
     /**
