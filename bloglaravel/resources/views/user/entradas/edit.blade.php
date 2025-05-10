@@ -53,8 +53,16 @@
             </flux:select>
 
             <!--FORMULARIO DESCRIPCION-->
-            <flux:textarea label="Descripcion" name="descripcion" rows="4" resize="none">
-                {{ old('descripcion', $entrada->descripcion) }}</flux:textarea>
+            {{-- <flux:textarea label="Descripcion" name="descripcion" rows="4" resize="none">
+                {{ old('descripcion') }}</flux:textarea> --}}
+                <div>
+                    <p class="font-medium text-sm mb-1">
+                        Descripción
+                    </p>
+                    <div id="editor">{!!old('descripcion', $entrada->descripcion)!!}</div>
+
+                    <textarea class="hidden" name="descripcion" id="descripcion"></textarea>
+                </div>
 
             <!--BOTON ACTUALIZAR Entrada-->
             <div class="flex justify-end mt-3">
@@ -62,4 +70,20 @@
             </div>
         </div>
     </form>
+    @push('js')
+    <!-- Include the Quill library -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    
+    <!-- Initialize Quill editor -->
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+
+        //Escuchamos un evento para el texto enriquecido
+        quill.on('text-change', function() {
+            document.querySelector('#descripcion').value = quill.root.innerHTML;
+        })
+    </script>
+@endpush
 </x-layouts.app>
