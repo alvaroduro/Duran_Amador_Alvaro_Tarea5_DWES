@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UsuarioController extends Controller
 {
@@ -43,7 +44,7 @@ class UsuarioController extends Controller
             'nick' => 'required|string|min:3|max:50|unique:users,nick',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
-            'avatar' => 'nullable|string', // La URL o ruta del avatar puede ser nula
+            'avatar' => 'nullable|image|max:2048', // La URL o ruta del avatar puede ser nula
             'rol' => 'in:admin,user', // Validamos que el rol sea válido
         ], [
             'nombre.required' => 'El nombre es obligatorio.',
@@ -62,18 +63,25 @@ class UsuarioController extends Controller
         // Encriptar la contraseña antes de guardar
         $datos['password'] = bcrypt($datos['password']);
 
+        //Comprobamos si se esta adjuntando la imagen
+        if ($request->hasFile('avatar')) {
+
+            //Subimos la imagen al servidor y guardamos la ruta
+            $datos['avatar'] = Storage::put('users', $request->avatar);
+        }
+
         // Guardar el usuario
-        User::create($datos);
+        $usuario = User::create($datos);
 
         // Mensaje de éxito con SweetAlert
         session()->flash('swa1', [
             'icon' => 'success',
             'title' => '¡Usuario creado!',
-            'text' => 'El usuario ha sido creado correctamente.',
+            'text' => 'El usuario: ' . $usuario->nombre . ' ha sido creado correctamente.',
         ]);
 
-        // Redirigir a la lista de usuarios
-        return redirect()->route('admin.usuarios.index');
+        // Redirigimos a la edición de la entrada
+        return redirect()->route('admin.usuarios.index', $usuario);
     }
 
 
@@ -81,9 +89,11 @@ class UsuarioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $usuario)
     {
-        //
+        $totalEntradas = $usuario->entradas()->count(); // Relación entradas del usuario
+
+        return view('admin.usuarios.show', compact('usuario', 'totalEntradas'));
     }
 
     /**
@@ -141,6 +151,18 @@ class UsuarioController extends Controller
             $datos['password'] = bcrypt($request->password);
         } else {
             unset($datos['password']); // No se actualiza la contraseña
+        }
+
+        //Comprobamos si se esta adjuntando la imagen
+        if ($request->hasFile('avatar')) {
+
+            //Comprobamos si hay una imagen anterior
+            if ($usuario->avatar) {
+                Storage::delete($usuario->avatar); //si hay algo la borramos
+            }
+
+            //Subimos la imagen al servidor y guardamos la ruta
+            $datos['avatar'] = Storage::put('users', $request->avatar);
         }
 
 

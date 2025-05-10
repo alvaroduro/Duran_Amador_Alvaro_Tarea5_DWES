@@ -7,9 +7,27 @@
         </flux:breadcrumbs>
     </div>
     <div class="card">
-        <form action="{{ route('admin.entradas.store') }}" method="POST" class="space-y-4">
+        <form action="{{ route('admin.entradas.store') }}" method="POST" class="space-y-4" enctype="multipart/form-data">
             @csrf
-            
+
+            <!-- Imagen -->
+            <div class="relative mb-2 w-full max-w-4xl mx-auto">
+
+                <!-- Imagen de referencia por defecto -->
+                <img id="imgPreview" class="w-full h-auto aspect-video object-cover object-center rounded-md shadow-md"
+                    src="https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg" alt="img">
+
+                <!-- Cambiar Imagen -->
+                <div class="absolute top-4 right-4">
+                    <label class="bg-white px-4 py-2 rounded-lg shadow cursor-pointer text-sm hover:bg-gray-100">
+                        Cambiar Imagen
+                        <input class="hidden" type="file" name="imagen" accept="image/*"
+                            onchange="previewImage(event, '#imgPreview')">
+                    </label>
+                </div>
+            </div>
+
+
             <!--FORMULARIO TITULO-->
             <flux:input label="Titulo" name="titulo" oninput="string_to_slug(this.value, '#slug')"
                 value="{{ old('titulo') }}" placeholder="Escribe el título de la entrads">
@@ -38,15 +56,25 @@
             <flux:textarea label="Descripcion" name="descripcion" rows="4" resize="none">
                 {{ old('descripcion') }}</flux:textarea>
 
-            <!-- Input de archivo -->
-            <img id="avatarPreview" class="w-24 h-24 object-cover object-center rounded-full shadow-md mb-4"
-                src="{{ old('avatar') ? Storage::url(old('avatar')) : asset('/img/noimage.jpeg') }}" alt="avatar" />
-
-            <!-- Input de archivo -->
-            <flux:input type="file" label="Avatar" name="avatar" onchange="previewAvatar(event)" />
-            <div class="flex justify-end mt-3">
-                <flux:button type="submit" variant="primary">Crear Entrada</flux:button>
-            </div>
+            <flux:button class="flex justify-end mt-3" type="submit" variant="primary">Crear Entrada</flux:button>
         </form>
     </div>
+
+    @push('js')
+        <script>
+            function previewImage(event, selector) {
+                const input = event.target;
+                const file = input.files[0];
+                const preview = document.querySelector(selector);
+
+                if (file && preview) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        </script>
+    @endpush
 </x-layouts.app>

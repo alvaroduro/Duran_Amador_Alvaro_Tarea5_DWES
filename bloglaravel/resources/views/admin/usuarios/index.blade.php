@@ -84,6 +84,10 @@
                                     <button type="submit" class="btn btn-red rounded-1 text-xs"
                                         href="{{ route('admin.usuarios.destroy', $user) }}">Eliminar</button>
                                 </form>
+                                <a class="btn btn-purple rounded-1 text-xs"
+                                    href="{{ route('admin.usuarios.show', $user) }}">
+                                    Detalle
+                                </a>
                             </div>
                         </td>
                     </tr>

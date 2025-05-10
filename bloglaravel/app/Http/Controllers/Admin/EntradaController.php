@@ -69,6 +69,13 @@ class EntradaController extends Controller
         //Nos traemos el id del usuario
         $datos['user_id'] = \Illuminate\Support\Facades\Auth::user()->id;
 
+        //Comprobamos si se esta adjuntando la imagen
+        if ($request->hasFile('imagen')) {
+
+            //Subimos la imagen al servidor y guardamos la ruta
+            $datos['imagen'] = Storage::put('entradas', $request->imagen);
+        }
+
         // Guardamos la entrada
         $entrada = Entrada::create($datos);
 
@@ -93,7 +100,7 @@ class EntradaController extends Controller
         $categorias = Categoria::all();
 
         //Creacion de un nuevo Entrada
-        return view('admin.entradas.show', compact('entrada', 'usuarios', 'categorias'));
+        return view('admin.entradas.edit', compact('entrada', 'usuarios', 'categorias'));
     }
 
     /**

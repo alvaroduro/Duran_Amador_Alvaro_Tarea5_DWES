@@ -9,7 +9,7 @@
 
     <!--Formulario Creacion Usuario-->
     <div class="card">
-        <form action="{{ route('admin.usuarios.store') }}" method="POST" class="space-y-3">
+        <form action="{{ route('admin.usuarios.store') }}" method="POST" class="space-y-3" enctype="multipart/form-data">
             @csrf
             <flux:input label="Nombre" name="nombre" value="{{ old('nombre') }}"
                 placeholder="Escribe el nombre del usuario">
@@ -27,14 +27,22 @@
                 placeholder="Escribe el email del usuario">
             </flux:input>
 
-            <!-- Input de archivo -->
-            <img id="avatarPreview"
-                class="w-24 h-24 object-cover object-center rounded-full shadow-md mb-4"
-                src="{{ old('avatar') ? Storage::url(old('avatar')) : asset('/img/noimage.jpeg') }}"
-                alt="avatar" />
+            <!-- Imagen Avatar-->
+            <div class="relative mb-2 w-full max-w-4xl mx-auto">
 
-            <!-- Input de archivo -->
-            <flux:input type="file" label="Avatar" name="avatar" onchange="previewAvatar(event)" />
+                <!-- Imagen de referencia por defecto -->
+                <img id="imgPreview" class="w-50 h-50 rounded-full object-cover border-4 border-gray-300 shadow-md mx-auto"
+                    src="https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg" alt="avatar">
+
+                <!-- Cambiar Imagen -->
+                <div class="absolute top-4 right-4">
+                    <label class="bg-white px-4 py-2 rounded-lg shadow cursor-pointer text-sm hover:bg-gray-100">
+                        Cambiar Avatar
+                        <input class="hidden" type="file" name="avatar" accept="image/*"
+                            onchange="previewImage(event, '#imgPreview')">
+                    </label>
+                </div>
+            </div>
 
             <flux:input type="password" label="Contraseña" name="password"
                 placeholder="Escribe la contraseña del usuario">
@@ -52,5 +60,21 @@
             </div>
         </form>
     </div>
-</x-layouts.app>
+    @push('js')
+    <script>
+        function previewImage(event, selector) {
+            const input = event.target;
+            const file = input.files[0];
+            const preview = document.querySelector(selector);
 
+            if (file && preview) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+@endpush
+</x-layouts.app>
