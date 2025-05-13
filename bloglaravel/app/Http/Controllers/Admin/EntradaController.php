@@ -17,7 +17,7 @@ class EntradaController extends Controller
      */
     public function index()
     {
-        $entradas = Entrada::with(['usuario', 'categoria'])->orderBy('id', 'desc')->paginate();
+        $entradas = Entrada::with(['usuario', 'categoria'])->orderBy('id', 'desc')->paginate(6);
 
         return view('admin.entradas.index', compact('entradas'));
     }

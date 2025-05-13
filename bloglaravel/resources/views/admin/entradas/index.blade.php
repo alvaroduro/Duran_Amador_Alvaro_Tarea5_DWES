@@ -20,7 +20,7 @@
                     <th scope="col" class="px-6 py-3">
                         TITULO
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 hidden">
                         SLUG
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -52,17 +52,21 @@
                             {{ $entrada->id }}
                         </th>
                         <!-- COLUMNAS CATEGORIAS DATOS -->
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 max-w-xs break-words whitespace-normal">
                             {{ $entrada->titulo }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 hidden">
                             {{ $entrada->slug }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4  max-w-xs break-words whitespace-normal">
                             {!! $entrada->descripcion !!}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $entrada->imagen }}
+                                @if($entrada->imagen && file_exists(public_path('storage/' . $entrada->imagen)))
+                                    <img src="{{ asset('storage/' . $entrada->imagen) }}" alt="" width="50" height="50" />
+                                @else
+                                    <img src="{{ asset('img/noimage.jpeg') }}" alt="Sin imagen" width="50" height="50" />
+                                @endif
                         </td>
                         <td class="px-6 py-4">
                             {{ $entrada->usuario->nombre }}

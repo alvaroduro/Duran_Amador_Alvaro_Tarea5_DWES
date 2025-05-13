@@ -64,8 +64,12 @@
                             {{ $user->email }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $user->avatar }}
-                        </td>
+                            @if($user->avatar && file_exists(public_path('storage/' . $user->avatar)))
+                                <img src="{{ asset('storage/' . $user->avatar) }}" alt="" width="50" height="50" />
+                            @else
+                                <img src="{{ asset('img/noimage.jpeg') }}" alt="Sin imagen" width="50" height="50" />
+                            @endif
+                    </td>
                         <td class="px-6 py-4">
                             {{ $user->rol }}
                         </td>
