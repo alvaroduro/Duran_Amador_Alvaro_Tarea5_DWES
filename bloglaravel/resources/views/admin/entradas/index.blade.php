@@ -35,8 +35,11 @@
                     <th scope="col" class="px-6 py-3">
                         CATEGORIA
                     </th>
-                    <th scope="col" class="px-6 py-3">
-                        FECHA PUBLICACION
+                    <th>
+                        <a href="{{ route('admin.entradas.index', ['orden' => $ordenTipo === 'asc' ? 'desc' : 'asc']) }}">
+                            Fecha Publicación
+                            {!! $ordenTipo === 'asc' ? '🔼' : '🔽' !!}
+                        </a>
                     </th>
                     <th scope="col" class="px-6 py-3" width="10px">
                         OPERACIONES
@@ -75,8 +78,9 @@
                             {{ $entrada->categoria->nombre }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $entrada->fecha_publicacion }}
+                            {{ $entrada->fecha_publicacion->format('d/m/Y') }}
                         </td>
+                        
                         <td class="px-6 py-4">
                             <div class="flex space-x-2">
 

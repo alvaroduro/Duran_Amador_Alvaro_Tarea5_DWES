@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UsuarioController extends Controller
 {
@@ -194,5 +195,16 @@ class UsuarioController extends Controller
         ]);
 
         return redirect()->route('admin.usuarios.index');
+    }
+
+    
+
+    public function exportarPdf()
+    {
+        $usuarios = User::orderby('id', 'desc')->get();
+
+        $pdf = Pdf::loadView('admin.usuarios.pdf', compact('usuarios'));
+
+        return $pdf->stream('usuarios.pdf'); // o download('archivo.pdf')
     }
 }

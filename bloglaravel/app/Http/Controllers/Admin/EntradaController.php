@@ -15,13 +15,16 @@ class EntradaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $entradas = Entrada::with(['usuario', 'categoria'])->orderBy('id', 'desc')->paginate(6);
+        $ordenTipo = $request->get('orden', 'desc'); // 'asc' o 'desc'
 
-        return view('admin.entradas.index', compact('entradas'));
+        $entradas = Entrada::with(['usuario', 'categoria'])
+            ->orderBy('fecha_publicacion', $ordenTipo)
+            ->paginate(6);
+
+        return view('admin.entradas.index', compact('entradas', 'ordenTipo'));
     }
-
 
     /**
      * Show the form for creating a new resource.

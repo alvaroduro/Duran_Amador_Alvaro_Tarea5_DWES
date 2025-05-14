@@ -6,6 +6,8 @@
             <flux:breadcrumbs.item>Usuarios</flux:breadcrumbs.item>
         </flux:breadcrumbs>
 
+        <a href="{{ route('admin.usuarios.pdf') }}" target="_blank" class="btn btn-green text-xs">Exportar PDF</a>
+
         <!--Boton nueva categoria-->
         <a href="{{ route('admin.usuarios.create') }}" class="btn btn-blue text-xs">Nuevo Usuario</a>
 
@@ -69,7 +71,7 @@
                             @else
                                 <img src="{{ asset('img/noimage.jpeg') }}" alt="Sin imagen" width="50" height="50" />
                             @endif
-                    </td>
+                        </td>
                         <td class="px-6 py-4">
                             {{ $user->rol }}
                         </td>

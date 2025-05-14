@@ -9,6 +9,11 @@
 .btn-red {
     @apply bg-red-500 text-white hover:bg-red-700;
 }
+
+.btn-green {
+    @apply bg-green-500 text-white hover:bg-green-700;
+}
+
 .btn-purple {
     @apply bg-purple-500 text-white hover:bg-purple-700;
 }

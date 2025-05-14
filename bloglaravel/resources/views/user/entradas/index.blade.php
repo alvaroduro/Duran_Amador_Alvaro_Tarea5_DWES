@@ -64,7 +64,7 @@
                             @else
                                 <img src="{{ asset('img/noimage.jpeg') }}" alt="Sin imagen" width="50" height="50" />
                             @endif
-                    </td>
+                       </td>
                         <td class="px-6 py-4">
                             {{ $entrada->categoria->nombre }}
                         </td>
