@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Imports\UsuariosImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UsuarioController extends Controller
 {
@@ -206,7 +211,9 @@ class UsuarioController extends Controller
     }
 
 
-
+    /**
+     * Exportar usuarios a PDF
+     */
     public function exportarPdf()
     {
         $usuarios = User::orderby('id', 'desc')->get();
@@ -214,5 +221,116 @@ class UsuarioController extends Controller
         $pdf = Pdf::loadView('admin.usuarios.pdf', compact('usuarios'));
 
         return $pdf->stream('usuarios.pdf'); // o download('archivo.pdf')
+    }
+
+    /**Metodo para importar archivos excel */
+    public function importarExcel(Request $request)
+    {
+        $request->validate([
+            'archivo' => 'required|mimes:xlsx,xls'
+        ], [
+            'archivo.mimes' => 'El formato no es el correcto.Debes ser un archivo Excel.',
+        ]);
+
+        try {
+            $import = new UsuariosImport();
+            Excel::import($import, $request->file('archivo'));
+
+            session(['usuarios_importados' => $import->usuarios]);
+
+            return view('admin.usuarios.importados', [
+                'usuarios' => $import->usuarios
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['archivo' => $e->getMessage()]);
+        }
+    }
+
+    public function vistaImportados()
+    {
+        $usuarios = Session::get('usuarios_importados', []);
+        return view('admin.usuarios.importados', compact('usuarios'));
+    }
+
+
+    public function guardarImportados()
+    {
+        $usuarios = Session::get('usuarios_importados', []);
+        $errores = [];
+        $usuariosValidados = [];
+
+        foreach ($usuarios as $index => $usuario) {
+            // Asignar 'user' si no hay rol
+            $usuario['rol'] = $usuario['rol'] ?? 'user';
+
+            $validator = Validator::make($usuario, [
+                'nick' => 'required|string|max:50|unique:users,nick',
+                'nombre' => 'required|string|min:2|max:100',
+                'apellidos' => 'nullable|string|max:100',
+                'avatar' => 'nullable|string|max:255', // nombre del archivo (ya subido)
+                'rol' => 'required|in:admin,user',
+                'email' => 'required|email|max:255|unique:users,email',
+                'password' => 'required|string|min:8',
+            ], [
+                'nick.required' => 'El nick es obligatorio.',
+                'nick.unique' => 'El nick ya existe.',
+                'nick.max' => 'El nick no debe superar los 50 caracteres.',
+                'nombre.required' => 'El nombre es obligatorio.',
+                'nombre.min' => 'El nombre debe tener al menos 2 caracteres.',
+                'apellidos.max' => 'Los apellidos no deben superar los 100 caracteres.',
+                'avatar.max' => 'El nombre del avatar es demasiado largo.',
+                'rol.required' => 'El rol es obligatorio.',
+                'rol.in' => 'El rol debe ser admin o user.',
+                'email.required' => 'El email es obligatorio.',
+                'email.email' => 'Formato de email no válido.',
+                'email.unique' => 'Ya existe un usuario con ese email.',
+                'password.required' => 'La contraseña es obligatoria.',
+                'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+            ]);
+
+            if ($validator->fails()) {
+                $errores[$index] = $validator->errors()->all();
+            } else {
+                // Preparamos usuario con contraseña encriptada
+                $usuarioValido = [
+                    'nick' => $usuario['nick'],
+                    'nombre' => $usuario['nombre'],
+                    'apellidos' => $usuario['apellidos'] ?? '',
+                    'avatar' => $usuario['avatar'] ?? null, // nombre del archivo (ej. juan.jpg)
+                    'rol' => $usuario['rol'],
+                    'email' => $usuario['email'],
+                    'password' => Hash::make($usuario['password']),
+                ];
+
+                $usuariosValidados[] = $usuarioValido;
+            }
+        }
+
+        // Mostrar errores si existen
+        if (!empty($errores)) {
+            return view('admin.usuarios.importados', [
+                'usuarios' => $usuariosValidados,
+                'errores' => $errores,
+                'usuariosConErrores' => array_filter($usuarios, fn($key) => isset($errores[$key]), ARRAY_FILTER_USE_KEY),
+            ]);
+        }
+
+        // Guardar los usuarios validados
+        foreach ($usuariosValidados as $usuarioData) {
+            User::create($usuarioData);
+        }
+
+        // Limpiar sesión
+        Session::forget('usuarios_importados');
+
+        // Mensaje flash de éxito
+        session()->flash('swa1', [
+            'icon' => 'success',
+            'tittle' => '¡Bien hecho!',
+            'text' => 'Usuarios agregados correctamente'
+        ]);
+
+        return redirect()->route('admin.usuarios.index')
+            ->with('success', 'Usuarios importados correctamente.');
     }
 }

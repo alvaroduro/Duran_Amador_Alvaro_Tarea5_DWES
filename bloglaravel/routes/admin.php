@@ -14,4 +14,7 @@ Route::middleware('is_admin')->group(function () {
     Route::get('usuarios.pdf', [UsuarioController::class, 'exportarPdf'])->name('usuarios.pdf');
     Route::get('usuarios.buscar', [SearchController::class, 'buscar'])->name('usuarios.buscar');
     Route::get('entradas.buscar', [SearchController::class, 'buscarEntradas'])->name('entradas.buscar');
+    Route::post('importar', [UsuarioController::class, 'importarExcel'])->name('importar');
+    Route::get('importados', [UsuarioController::class, 'vistaImportados'])->name('importados');
+    Route::post('guardar_importados', [UsuarioController::class, 'guardarImportados'])->name('guardarImportados');
 });

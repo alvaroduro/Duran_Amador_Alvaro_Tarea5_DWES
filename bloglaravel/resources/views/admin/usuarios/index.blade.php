@@ -5,12 +5,27 @@
             <flux:breadcrumbs.item href="{{ route('home') }}">Dashboard</flux:breadcrumbs.item>
             <flux:breadcrumbs.item>Usuarios</flux:breadcrumbs.item>
         </flux:breadcrumbs>
-
+    </div>
+    <div class="flex items-center gap-4 mb-4 flex-wrap justify-between">
         <a href="{{ route('admin.usuarios.pdf') }}" target="_blank" class="btn btn-green text-xs">Exportar PDF</a>
+        <!--Formulario de Usuarios-->
+        <form action="{{ route('admin.importar') }}" method="POST" enctype="multipart/form-data" class="flex items-center">
+            @csrf
+            <input type="file" name="archivo" class="text-sm text-white bg-lime-700 p-1 rounded" required>
+            <button type="submit" class="btn btn-lime rounded-1 text-xs">Importar Excel Usuarios</button>
+        </form>
+        @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <ul class="list-disc list-inside">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+    </div>
+    @endif
 
         <!--Boton nueva categoria-->
         <a href="{{ route('admin.usuarios.create') }}" class="btn btn-blue text-xs">Nuevo Usuario</a>
-
     </div>
 
     <!--Formulario de busqueda usuarios por nombre-->
