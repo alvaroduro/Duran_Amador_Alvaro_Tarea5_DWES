@@ -17,14 +17,23 @@ class EntradaController extends Controller
      */
     public function index(Request $request)
     {
-        $ordenTipo = $request->get('orden', 'desc'); // 'asc' o 'desc'
+        // Obtenemos el texto a buscar y el tipo de orden desde el formulario o la URL
+        $search = $request->input('search'); // texto buscado
+        $ordenTipo = $request->get('orden', 'desc'); // 'asc' o 'desc' (por defecto descendente)
 
+        // Consulta base con relaciones
         $entradas = Entrada::with(['usuario', 'categoria'])
-            ->orderBy('fecha_publicacion', $ordenTipo)
-            ->paginate(6);
+            ->when($search, function ($query, $search) {
+                // Si hay texto a buscar, se aplica el filtro al título
+                return $query->where('titulo', 'LIKE', '%' . $search . '%');
+            })
+            ->orderBy('fecha_publicacion', $ordenTipo) // Se aplica orden
+            ->paginate(5); // Se limita a 5 resultados por página
 
-        return view('admin.entradas.index', compact('entradas', 'ordenTipo'));
+        // Mantenemos el valor de búsqueda y orden en la vista (para conservar en los formularios o links)
+        return view('admin.entradas.index', compact('entradas', 'ordenTipo', 'search'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -103,7 +112,7 @@ class EntradaController extends Controller
         $categorias = Categoria::all();
 
         //Creacion de un nuevo Entrada
-        return view('admin.entradas.edit', compact('entrada', 'usuarios', 'categorias'));
+        return view('admin.entradas.show', compact('entrada', 'usuarios', 'categorias'));
     }
 
     /**

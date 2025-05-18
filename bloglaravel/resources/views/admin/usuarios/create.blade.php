@@ -1,7 +1,7 @@
 <x-layouts.app>
     <div class="mb-8 flex justify-between items-center">
         <flux:breadcrumbs class="mb-2">
-            <flux:breadcrumbs.item href="{{ route('dashboard') }}">Dashboard</flux:breadcrumbs.item>
+            <flux:breadcrumbs.item href="{{ route('home') }}">Dashboard</flux:breadcrumbs.item>
             <flux:breadcrumbs.item href="{{ route('admin.usuarios.index') }}">Usuarios</flux:breadcrumbs.item>
             <flux:breadcrumbs.item>Nuevo Usuario</flux:breadcrumbs.item>
         </flux:breadcrumbs>

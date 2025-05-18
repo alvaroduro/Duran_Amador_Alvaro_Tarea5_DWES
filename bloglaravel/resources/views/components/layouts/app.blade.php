@@ -60,6 +60,11 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <!-- CSS de Quill directamente -->
         <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+        <!--JQUERY-->
+        <script src="{{ asset('vendor/jquery/jquery-3.7.1.js') }}"></script>
+        <!-- jQuery UI CSS-->
+        <link rel="stylesheet" href="{{ asset('vendor/jquery-ui/jquery-ui-1.14.1/jquery-ui.min.css') }}">
+
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />

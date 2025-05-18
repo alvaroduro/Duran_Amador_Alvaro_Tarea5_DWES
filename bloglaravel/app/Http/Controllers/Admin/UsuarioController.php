@@ -14,12 +14,20 @@ class UsuarioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //Traemos todas las categorias:
-        $usuarios = User::orderby('id', 'desc')->get();
+        // Se obtiene el texto de búsqueda desde la URL (?search=algo)
+        $search = $request->input('search');
 
-        //Mostramos vista
+        // Se consultan los usuarios aplicando la búsqueda solo si hay texto introducido
+        $usuarios = User::when($search, function ($query, $search) {
+            // Si hay un término de búsqueda, se aplica un filtro en el campo 'nombre'
+            return $query->where('nombre', 'LIKE', '%' . $search . '%');
+        })
+            ->orderBy('id', 'desc')  // Orden descendente por ID (muestra los últimos usuarios primero)
+            ->paginate(5); // Se aplica paginación: muestra 5 usuarios por página
+
+        // Se retorna la vista 'admin.usuarios.index' y se le pasa la variable $usuarios
         return view('admin.usuarios.index', compact('usuarios'));
     }
 
@@ -197,7 +205,7 @@ class UsuarioController extends Controller
         return redirect()->route('admin.usuarios.index');
     }
 
-    
+
 
     public function exportarPdf()
     {

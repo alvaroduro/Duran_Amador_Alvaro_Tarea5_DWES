@@ -2,7 +2,7 @@
 
     <div class="mb-8 flex justify-between items-center">
         <flux:breadcrumbs class="mb-4">
-            <flux:breadcrumbs.item href="{{ route('dashboard') }}">Dashboard</flux:breadcrumbs.item>
+            <flux:breadcrumbs.item href="{{ route('home') }}">Dashboard</flux:breadcrumbs.item>
             <flux:breadcrumbs.item>Usuarios</flux:breadcrumbs.item>
         </flux:breadcrumbs>
 
@@ -12,6 +12,20 @@
         <a href="{{ route('admin.usuarios.create') }}" class="btn btn-blue text-xs">Nuevo Usuario</a>
 
     </div>
+
+    <!--Formulario de busqueda usuarios por nombre-->
+    <form action="" class="flex justify-center mt-10 mb-4">
+        <div class="flex w-full max-w-md bg-slate-800 rounded-xl overflow-hidden shadow-lg">
+            <input type="text"
+                class="flex-1 px-4 py-2 bg-slate-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                placeholder="Buscar Usuarios" name="search" id="search" aria-label="Search" />
+            <button type="button" id="btn-buscar"
+                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-sm font-semibold transition-all">
+                Buscar
+            </button>
+
+        </div>
+    </form>
 
     <!--TABLA USUARIOS-->
     <div class="relative overflow-x-auto">
@@ -102,6 +116,11 @@
         </table>
     </div>
 
+    <!-- PAGINACION -->
+    <div class="mt-4">
+        {{ $usuarios->appends(['buscar' => request('buscar')])->links() }}
+    </div>
+
     @push('js')
         <script>
             //Seleccionamos todos los formularios de eliminar
@@ -131,5 +150,41 @@
                 });
             });
         </script>
+        <script src="{{ asset('vendor/jquery-ui/jquery-ui-1.14.1/jquery-ui.min.js') }}"></script>
+        <script>
+            // Cuando se carga la página, se activa el autocompletado en el input con id "search"
+            $('#search').autocomplete({
+                // source define cómo se van a obtener los resultados del autocompletado
+                source: function(request, response) {
+                    // Se hace una petición AJAX al servidor para buscar coincidencias
+                    $.ajax({
+                        url: "{{ route('admin.usuarios.buscar') }}", // Ruta que devuelve los datos (en formato JSON)
+                        data: {
+                            term: request.term // Se envía lo que el usuario está escribiendo en el input
+                        },
+                        dataType: "json", // Se espera una respuesta en formato JSON
+                        success: function(data) {
+                            // Si la petición es exitosa, se ejecuta esta función
+                            // 'data' debe ser un array de objetos con propiedades 'label' y 'value'
+                            response(data); // Se muestran los resultados en la lista de autocompletado
+                        }
+                    });
+                },
+                // select se ejecuta cuando el usuario selecciona una opción de la lista
+                select: function(event, ui) {
+                    // Redirige a la página de resultados, agregando el valor seleccionado en la URL como parámetro de búsqueda
+                    window.location.href = "{{ route('admin.usuarios.index') }}" + "?search=" + ui.item.value;
+                }
+            });
+        
+            // Si el usuario hace clic en el botón con id "btn-buscar"
+            $('#btn-buscar').on('click', function() {
+                // Se obtiene el valor escrito en el input de búsqueda
+                const valor = $('#search').val();
+                // Se redirige a la página de resultados con el parámetro search en la URL
+                window.location.href = "{{ route('admin.usuarios.index') }}" + "?search=" + valor;
+            });
+        </script>
+        
     @endpush
 </x-layouts.app>

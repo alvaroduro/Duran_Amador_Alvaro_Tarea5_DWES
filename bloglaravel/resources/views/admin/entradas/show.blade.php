@@ -2,7 +2,7 @@
     <!-- Breadcrumbs y título principal -->
     <div class="mb-8 flex justify-between items-center container mx-auto">
         <flux:breadcrumbs class="mb-4">
-            <flux:breadcrumbs.item href="{{ route('dashboard') }}">Dashboard</flux:breadcrumbs.item>
+            <flux:breadcrumbs.item href="{{ route('home') }}">Dashboard</flux:breadcrumbs.item>
             <flux:breadcrumbs.item href="{{ route('admin.entradas.index') }}">Entradas</flux:breadcrumbs.item>
             <flux:breadcrumbs.item>Detalle Entrada: {{ $entrada->titulo }}</flux:breadcrumbs.item>
         </flux:breadcrumbs>
