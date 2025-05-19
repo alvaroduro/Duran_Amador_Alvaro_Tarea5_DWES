@@ -135,6 +135,20 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
     </form>
 
+    <div class="text-center">
+        <a href="{{ route('google.redirect') }}" class="inline-flex items-center px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <!-- SVG del logo de Google -->
+                <path d="M21.805 10.023H12v3.994h5.629c-.244 1.29-.975 2.382-2.063 3.097v2.572h3.343c1.957-1.804 3.096-4.46 3.096-7.663 0-.65-.058-1.282-.167-1.9z"/>
+                <path d="M12 22c2.7 0 4.961-.891 6.613-2.406l-3.343-2.572c-.926.62-2.117.99-3.27.99-2.512 0-4.637-1.693-5.396-3.97H3.148v2.49A9.996 9.996 0 0012 22z"/>
+                <path d="M6.604 13.042a5.99 5.99 0 010-3.083v-2.49H3.148a9.998 9.998 0 000 8.063l3.456-2.49z"/>
+                <path d="M12 6.084c1.47 0 2.788.506 3.825 1.496l2.862-2.863C16.958 2.89 14.7 2 12 2a9.996 9.996 0 00-8.852 5.469l3.456 2.49C7.363 7.778 9.488 6.084 12 6.084z"/>
+            </svg>
+            Iniciar sesión con Google
+        </a>
+    </div>
+    
+
     @if (Route::has('register'))
         <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
             {{ __('No tienes cuenta?') }}

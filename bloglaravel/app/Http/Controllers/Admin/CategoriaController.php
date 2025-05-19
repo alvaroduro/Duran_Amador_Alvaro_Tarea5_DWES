@@ -16,7 +16,7 @@ class CategoriaController extends Controller
     public function index()
     {
         //Traemos todas las categorias:
-        $categorias = Categoria::orderby('id', 'desc')->get();
+        $categorias = Categoria::orderBy('id', 'desc')->paginate(5);
 
         //Mostramos vista
         return view('admin.categorias.index', compact('categorias'));

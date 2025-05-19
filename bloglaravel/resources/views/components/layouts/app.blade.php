@@ -29,6 +29,13 @@
             'ruta' => route('admin.entradas.index'),
             'current' => request()->routeIs('admin.entradas.*'),
         ];
+        
+        $grupoBlog[] = [
+            'nombre' => 'Logs',
+            'icono' => 'numbered-list',
+            'ruta' => route('admin.logs.index'),
+            'current' => request()->routeIs('admin.logs.*'),
+        ];
     } elseif (auth()->user()->rol === 'user') {
         $grupoBlog[] = [
             'nombre' => 'Entradas',

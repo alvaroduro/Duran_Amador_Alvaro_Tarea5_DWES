@@ -35,7 +35,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 <div class="flex flex-col gap-6">
     <x-auth-header
         :title="__('Confirm password')"
-        :description="__('Introduzca su contraseña para conrinuar.')"
+        :description="__('Introduzca su contraseña para continuar.')"
     />
 
     <!-- Session Status -->

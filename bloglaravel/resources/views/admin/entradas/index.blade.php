@@ -5,8 +5,12 @@
             <flux:breadcrumbs.item>Entradas</flux:breadcrumbs.item>
         </flux:breadcrumbs>
 
+        <!-- Botón ver registros de logs -->
+        <a href="{{ route('admin.logs.index') }}" class="btn btn-slate text-xs">Ver Logs</a>
+
         <!--Boton nueva categoria-->
         <a href="{{ route('admin.entradas.create') }}" class="btn btn-blue text-xs">Nueva Entrada</a>
+
     </div>
 
     <!--Formulario de busqueda entradas por titulo-->
