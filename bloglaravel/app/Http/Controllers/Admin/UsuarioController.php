@@ -13,6 +13,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UsuarioController extends Controller
 {
@@ -206,6 +208,7 @@ class UsuarioController extends Controller
             'tittle' => 'Bien hecho!',
             'text' => 'Usuario: ' . $nombre . ' eliminado correctamente'
         ]);
+
 
         return redirect()->route('admin.usuarios.index');
     }

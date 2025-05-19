@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class CategoriaController extends Controller
 {
@@ -54,6 +56,12 @@ class CategoriaController extends Controller
             'icon' => 'success',
             'tittle' => 'Bien hecho!',
             'text' => 'Categoria creada correctamente'
+        ]);
+
+        // Registrar log
+        DB::statement("CALL insertar_log(?, ?)", [
+            Auth::check() ? Auth::user()->email : 'Invitado',
+            'Agregar categoria: ' . $datos['nombre']
         ]);
 
         //Redirigimos al listado de categorias

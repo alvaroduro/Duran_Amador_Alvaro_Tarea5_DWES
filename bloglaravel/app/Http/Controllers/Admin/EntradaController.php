@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class EntradaController extends Controller
 {
@@ -179,6 +180,12 @@ class EntradaController extends Controller
             'text' => 'La entrada "' . $entrada->titulo . '" se actualizó correctamente.'
         ]);
 
+        // Registrar log
+        DB::statement("CALL insertar_log(?, ?)", [
+            Auth::check() ? Auth::user()->email : 'Invitado',
+            'Editar post: ' . $entrada->titulo,
+        ]);
+
         // Redirigimos a la página de edición de la entrada
         return redirect()->route('admin.entradas.edit', $entrada);
     }
@@ -196,6 +203,12 @@ class EntradaController extends Controller
             'tittle' => 'Bien hecho!',
             'text' => 'Entrada: ' . $entrada->nombre . ' eliminada correctamente'
         ]);
+
+      // Registrar log
+      DB::statement("CALL insertar_log(?, ?)", [
+        Auth::check() ? Auth::user()->email : 'Invitado',
+        'Elimnar entrada: ' . $entrada->titulo,
+    ]);
 
         return redirect()->route('admin.entradas.index');
     }
