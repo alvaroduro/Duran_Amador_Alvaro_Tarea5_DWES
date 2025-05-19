@@ -19,7 +19,14 @@ class IsUser
             return $next($request);
         }
 
-        return redirect()->route('login')->with('error', 'Acceso no permitido.');
+        // Mostramos un mensaje de éxito
+        session()->flash('swa1', [
+            'icon' => 'danger',
+            'tittle' => '¡Error!',
+            'text' => 'Acceso no permitido.'
+        ]);
+
+        return redirect()->route('home');
     }
     }
 

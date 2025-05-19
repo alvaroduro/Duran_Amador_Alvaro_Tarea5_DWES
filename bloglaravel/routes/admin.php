@@ -20,4 +20,5 @@ Route::middleware('is_admin')->group(function () {
     Route::get('importados', [UsuarioController::class, 'vistaImportados'])->name('importados');
     Route::post('guardar_importados', [UsuarioController::class, 'guardarImportados'])->name('guardarImportados');
     Route::get('logs.pdf', [LogController::class, 'exportarPdf'])->name('logs.pdf');
+
 });

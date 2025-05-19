@@ -30,6 +30,12 @@
                 'ruta' => route('admin.entradas.index'),
                 'current' => request()->routeIs('admin.entradas.*'),
             ];
+            $links[] = [
+                'nombre' => 'Logs',
+                'icono' => 'numbered-list',
+                'ruta' => route('admin.logs.index'),
+                'current' => request()->routeIs('admin.logs.*'),
+            ];
         } elseif (auth()->user()->rol === 'user') {
             $links[] = [
                 'nombre' => 'Mis Entradas',
@@ -53,6 +59,8 @@
         <link rel="icon" href="/img/faviconblog.png" sizes="any">
         <link rel="icon" href="/img/faviconblog.png" type="image/svg+xml">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <!--SweetArlert2-->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
@@ -206,4 +214,14 @@
 
         @fluxScripts
     </body>
+    <!--DEFINIMOS EN MI PLANTILLA PRINCIPAL LOS ALERTAS DE SWEETALERT Y CONTENIDO JS-->
+    @stack('js')
+
+    @if(session('swa1'))
+
+        <script>
+            Swal.fire(@json(session('swa1')));
+        </script>
+        
+    @endif
 </html>

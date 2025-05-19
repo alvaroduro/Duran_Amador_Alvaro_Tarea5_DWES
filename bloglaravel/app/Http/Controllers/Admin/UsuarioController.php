@@ -59,11 +59,13 @@ class UsuarioController extends Controller
             'apellidos' => 'required|string|min:2|max:255',
             'nick' => 'required|string|min:3|max:50|unique:users,nick',
             'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:8|confirmed',
             'avatar' => 'nullable|image|max:2048', // La URL o ruta del avatar puede ser nula
             'rol' => 'in:admin,user', // Validamos que el rol sea válido
         ], [
             'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.min' => 'El nombre debe tener minimo 2 caracteres.',
+            'apellidos.min' => 'los apellidos deben tener minimo 2 caracteres.',
             'apellidos.required' => 'Los apellidos son obligatorios.',
             'nick.required' => 'El nick es obligatorio.',
             'nick.unique' => 'Ya existe un usuario con ese nick.',
