@@ -147,7 +147,11 @@ new #[Layout('components.layouts.auth')] class extends Component {
             Iniciar sesión con Google
         </a>
     </div>
-    
+    <div class="text-center">
+        <flux:link :href="route('home')" wire:navigate>
+            {{ __('Volver al inicio') }}
+        </flux:link>
+    </div>
 
     @if (Route::has('register'))
         <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
@@ -156,6 +160,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
         </div>
     @endif
 </div>
+
+
 
 
 

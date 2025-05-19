@@ -15,7 +15,7 @@
 
         <!-- Descripción -->
         <p class="text-lg text-gray-600 mb-6 text-center leading-relaxed">
-            {{ $entrada->descripcion }}
+            {!! $entrada->descripcion !!}
         </p>
 
         <!--Cogemos l url que nos genera el paquete-->
@@ -27,7 +27,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center text-base text-gray-700 mt-8 font-medium">
             <div class="bg-gray-100 dark:bg-zinc-700 p-5 rounded-lg shadow">
                 <p class="text-lg font-semibold text-gray-800 dark:text-white mb-1">Autor</p>
-                <p>{{ $entrada->usuario->name }}</p>
+                <p>{{ $entrada->usuario->nombre }}</p>
             </div>
             <div class="bg-gray-100 dark:bg-zinc-700 p-5 rounded-lg shadow">
                 <p class="text-lg font-semibold text-gray-800 dark:text-white mb-1">Categoría</p>

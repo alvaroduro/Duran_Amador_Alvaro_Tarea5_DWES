@@ -25,14 +25,18 @@ new #[Layout('components.layouts.auth')] class extends Component {
     public function register(): void
     {
         $validated = $this->validate([
-            'nick' => 'required|string|min:3|max:50|unique:users,nick',
+            'nick' => 'required|string|min:2|max:50|unique:users,nick',
             'nombre' => 'required|string|min:2|max:255',
             'apellidos' => 'required|string|min:2|max:255',
             'email' => ['required', 'string', 'min:8', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ], [
             'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.min' => 'El nombre debe tener más caracteres.',
+            'nick.min' => 'El nombre debe tener más caracteres.',
+            'nick.min' => 'El nick debe tener más caracteres.',
             'apellidos.required' => 'Los apellidos son obligatorios.',
+            'apellidos.min' => 'los apellidos deben tener más caracteres..',
             'nick.required' => 'El nick es obligatorio.',
             'nick.unique' => 'Ya existe un usuario con ese nick.',
             'email.required' => 'El email es obligatorio.',
@@ -139,6 +143,11 @@ new #[Layout('components.layouts.auth')] class extends Component {
             </flux:button>
         </div>
     </form>
+    <div class="text-center">
+        <flux:link :href="route('home')" wire:navigate>
+            {{ __('Volver al inicio') }}
+        </flux:link>
+    </div>
 
     <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
         ¿Ya tienes una cuenta?
